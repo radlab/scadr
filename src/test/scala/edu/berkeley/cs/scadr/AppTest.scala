@@ -33,20 +33,20 @@ class AppTest extends TestCase("app") {
 
 		assert_same(thoughts.reverse.take(5), Thought.findRecentThoughts("simpleUser", 5))
 	}
- 
+
 	def testUsers() {
 		var retUser: User = null;
 		val u1 = User.create("user1", "mypass")
 		u1.addFriend("user2")
 		u1.addFriend("user3")
 		u1.save
-		
+
 		retUser = User.find("user1")
 		assert(u1.username == retUser.username, "Usernames differ:" + u1.username + " " + retUser.username)
 		assert(u1.password == retUser.password, "Passwords differ:" + u1.password + " " + retUser.password)
 		assert(retUser.friendList.contains("user2"), "Missing user2")
 		assert(retUser.friendList.contains("user3"), "Missing user3")
-  
+
 		val users = User.listUsers("", 100)
 		assert(users.contains(u1), "User1 is missing from list " + users.toList)
 	}

@@ -18,7 +18,7 @@ class RegisterUser {
 		S.notice("User " + username + " created!")
 	    redirectTo("index")
 	  }
-   
+
 	  bind("e", xhtml,
 	  		"username" -> SHtml.text(username, username = _),
 	  		"password" -> SHtml.text(password, password = _),

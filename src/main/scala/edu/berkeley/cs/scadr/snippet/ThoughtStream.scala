@@ -12,21 +12,21 @@ import edu.berkeley.cs.scadr.model.Json
 class ThoughtStream {
 	def currentUser(xhtml: NodeSeq): NodeSeq = {
 	  val thoughts = User.currentUser.friendsRecentThoughts(10)
-	  
+
 	  thoughts.flatMap((t) =>
 	    bind("t", xhtml,
 	    	"username" -> t.username,
 	    	"timestamp" -> t.timestamp,
 	    	"text" -> t.text))
      }
- 
+
 	def think(xhtml: NodeSeq): NodeSeq = {
 	  var thought = ""
 	  def processThought() = {
 	    User.currentUser.think(thought)
 	    S.notice("Thought recorded!")
 	  }
-	  
+
 	  bind("e", xhtml,
 	  		"thought" -> SHtml.text(thought, thought = _),
 	  		"submit" -> SHtml.submit("submit", processThought))

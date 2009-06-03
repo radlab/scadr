@@ -13,23 +13,23 @@ import edu.berkeley.cs.scadr.model.User
   * to modify lift's environment
   */
 class Boot {
-  def boot {    
+  def boot {
     // where to search snippet
     LiftRules.addToPackages("edu.berkeley.cs.scadr")
 
     //Set up http authentication
     val roles = AuthRole("User")
-    
+
     LiftRules.httpAuthProtectedResource.append{
       case(ParsePath("stream" :: _, _, _, _)) =>
         roles.getRoleByName("User")
     }
-    
+
     LiftRules.httpAuthProtectedResource.append{
       case(ParsePath("users" :: _, _, _, _)) =>
         roles.getRoleByName("User")
     }
-    
+
     LiftRules.authentication = HttpBasicAuthentication("scadr") {
       case(username: String, password: String, req) => {
         try {
@@ -44,14 +44,13 @@ class Boot {
         }
       }
     }
- 
+
     // Build SiteMap
-    val entries = Menu(Loc("Home", List("index"), "Home")) ::  
-    			  Menu(Loc("Register", List("register"), "Register")) :: 
-    			  Menu(Loc("Thought Stream", List("stream"), "Thought Stream")) :: 
-    			  Menu(Loc("Find Friends", List("users"), "Find Friends")) :: 
+    val entries = Menu(Loc("Home", List("index"), "Home")) ::
+    			  Menu(Loc("Register", List("register"), "Register")) ::
+    			  Menu(Loc("Thought Stream", List("stream"), "Thought Stream")) ::
+    			  Menu(Loc("Find Friends", List("users"), "Find Friends")) ::
     		      Nil
     LiftRules.setSiteMap(SiteMap(entries:_*))
   }
 }
-

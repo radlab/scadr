@@ -16,7 +16,7 @@ class Friends {
 				S.notice("added " + f.username + " as a friend")
 				User.currentUser.save
 			}
-   
+
 			def removeFriend(f: User) = {
 				User.currentUser.removeFriend(f.username)
 				S.notice("removed " + f.username + " as a friend")
@@ -25,13 +25,13 @@ class Friends {
 
 
 			val users = User.listUsers("", 10)
-			def pickAction(f: User) = 
+			def pickAction(f: User) =
 				if(User.currentUser.isFriend(f))
 					SHtml.submit("remove friend", () => removeFriend(f))
                 else
                     SHtml.submit("add friend", () => addFriend(f))
-   
-			users.filter((u) => (u.username != User.currentUser.username)).flatMap((u) => 
+
+			users.filter((u) => (u.username != User.currentUser.username)).flatMap((u) =>
 				bind("u", xhtml,
 					"username" -> u.username,
 					"toggle" -> pickAction(u)
