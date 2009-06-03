@@ -1,22 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+
+	curiously.green1.0 by nodethirtythree design
+	http://www.nodethirtythree.com
+	hope you enjoy it :)
+
+-->
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:lift="http://liftweb.net/">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Welcome to SCADr Running on SCADS</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="default.css" />
+</head>
+<body>
+
+<div id="header">
+	<div id="header_inner">
+		<h1><span>SCADr.</span>radlab.net</h1>
+		<div id="slogan">Running on SCADS!</div>
+	</div>
+</div>
+
+<div id="main">
+
+	<div id="lcol">
+		<div id="menu">
+			<ul>
+				<lift:Menu.builder />
+			</ul>
+		</div>
+		<div id="menu_end"></div>
+
+		<div id="lcontent">
+			<h3 class="first">meet.the.<span>team</span></h3>
+			<ul class="divided">
+				<li class="first"><a href="http://cs.berkeley.edu/~marmbrus">Michael Armbrust</a></li>
+				<li><a href="http://cs.berkeley.edu/~nickl">Nick Lanham</a></li>
+				<li><a href="http://cs.berkeley.edu/~trush">Beth Trushkowsky</a></li>
+				<li><a href="http://cs.berkeley.edu/~jtrutna">Jesse Trutna</a></li>
+			</ul>
 		
-		<title>SCADr Your Thoughts on SCADS</title>
-		<script id="jquery" src="/classpath/jquery.js" type="text/javascript"></script>
-	</head>
-	<body>
-		<table>
-			<tr>
-				<td><h1>SCADR</h1></td>
-				<td><lift:msgs/></td>
-			</tr>
-			<tr>
-				<td><lift:Menu.builder /></td>
-				<td><lift:bind name="content" /></td>
-			</tr>
-		</table>
-	</body>
+			<h3>helpful.<span>advisors</span></h3>
+			<p><a href="#">Armando Fox</a> arcu et vivamus viverra. Nullam turpis. Vestibulum Nullam turpis vestibulum.</p>	
+			<div class="divider"></div>
+
+			<p><a href="#">Michael Franklin</a> sed arcu et vivamus viverra lorem ipsum dolor sit amet dolore nulla facilisi.</p>
+			<div class="divider"></div>
+			
+			<p><a href="#">David Patterson</a> arcu et vivamus viverra. Nullam turpis. Vestibulum Nullam turpis vestibulum.</p>	
+			
+		</div>
+
+	</div>
+
+	<div id="rcol">
+		<div id="rcontent">
+			<lift:bind name="content" />
+		</div>
+	</div>
+
+</div>
+
+<div id="footer">
+	&copy; 2009 The Regents of the University of California Berkeley. All rights reserved. Design by <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a>.
+</div>
+
+</body>
 </html>

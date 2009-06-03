@@ -1,5 +1,35 @@
 <lift:surround with="default" at="content">
-		<h2>Welcome to SCADR</h2>
-		Welcome to the new and "improved" version of SCADr!
+<h1>Welcome to <span>SCADr<sup>2.0</sup></span></h1>
+			<span id="slogan2">a <i>hopefully</i> scaleable way to share your thoughts </span>
+	
+			<h3>what.is.<span>SCADr</span>?</h3>
+			<p>
+				SCADr is a blatant rip-off of <a href="http://www.twitter.com">twitter</a>, designed buy PhD Students to attempt to understand some of the
+				scaling challenges of building large websites.  Register, add your friends, read your custom thoughtstream, and share all of your thoughts...
+				you'll be helping our research!
+			</p>
+	
+	
+			<div class="divider"></div>
+			<div class="summary">- SCADr is a project of the <a href="http://radlab.cs.berkeley.edu/">RAD Lab</a> at UC Berkeley</div>
+	
+			<h3>what.is.<span>SCADS</span>?</h3>
+			<p>
+				Collaborative web applications such as <a href="http://www.thefacebook.com">Facebook</a>, <a href="http://www.flickr.com">Flickr</a> and <a href="http://www.yelp.com">Yelp</a> present new challenges for storing and 
+				querying large amounts of data. As users and developers are focused more on performance than single copy 
+				consistency or the ability to perform ad-hoc queries, there exists an opportunity for a highly-scalable 
+				system tailored specifically for relaxed consistency and pre-computed queries. The Web<sup>2.0</sup> development model 
+				demands the ability to both rapidly deploy new features and automatically scale with the number of users. 
+				There have been many <a href="http://labs.google.com/papers/bigtable.html">successful</a> <a href="http://s3.amazonaws.com/AllThingsDistributed/sosp/amazon-dynamo-sosp2007.pdf">distributed</a> <a href="http://pdos.csail.mit.edu/chord/">key-value</a> <a href="http://www.danga.com/memcached/">stores</a>, but so far none provide as rich a query 
+				language as SQL. We propose a new architecture, SCADS, that allows the developer to declaratively state 
+				application specific consistency requirements, takes advantage of utility computing to provide cost 
+				effective scale-up and scale-down, and will use machine learning models to introspectively anticipate 
+				performance problems and predict the resource requirements of new queries before execution.
+			</p>
+	
+			<div class="divider"></div>
+			<div class="summary">- Read more about SCADS in our <a href="http://athx2.cs.berkeley.edu/~marmbrus/scadscider09.pdf">CIDR09 Vision paper</a> at UC Berkeley</div>
+
+
 </lift:surround>
 

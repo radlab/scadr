@@ -1,7 +1,12 @@
 <lift:surround with="default" at="content">
 	<h2>User List</h2>
+	
+	<p>Here is a list of users that you can add as friends.  Right now its limited to the first 10 (for scalability reasons!)
+	Some day I'll add searching and paging</p>
+	
+	<table>
 	<lift:friends.listUsers form="POST" multipart="true">
-		<u:username/>
-		<u:toggle/>
+		<tr><td><u:username/></td><td><u:toggle/></td></tr>
 	</lift:friends.listUsers>
+	</table>
 </lift:surround>

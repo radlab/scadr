@@ -1,7 +1,25 @@
 <lift:surround with="default" at="content">
+	<h1>Register for <span>SCADr<sup>2.0</sup></span></h1>
+	<span id="slogan2">You have to tell us who you are first!</span>
+
+	<p>
+		For now its a pretty simple sure form <span>(We don't even * out your password!)</span>
+		More features will be added soon.  We promise!
+	</p>	
+
+	<table>
 		<lift:registerUser.register form="POST" multipart="true">
-			Username: <e:username/><br/>
-			Password: <e:password/><br/>
-			<e:submit/>
+			<tr>
+				<td>Username:</td>
+				<td><e:username/></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td><e:password/></td>
+			</tr>
+			<tr>
+				<td><e:submit/></td>
+			</tr>
 		</lift:registerUser.register>
+	</table>
 </lift:surround>
