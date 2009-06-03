@@ -2,8 +2,10 @@ package edu.berkeley.cs.scadr.model
 
 import edu.berkeley.cs.scads._
 import java.security.MessageDigest
+import net.liftweb.http.RequestVar  
 
 object User {
+	object currentUser extends RequestVar[User](null)
 	val passHash = MessageDigest.getInstance("MD5")
  
 	def create(username: String, password:String): User = {
@@ -13,13 +15,30 @@ object User {
 	}
  
 	def find(username: String):User = {
-	  val value = new String(SCADSCluster.client.get("users", new StringKey(username).serialize).value)
-	  val attrs = Json.parse(value).asInstanceOf[Map[String, AnyRef]]
+	  deserialize(SCADSCluster.client.get("users", new StringKey(username).serialize))
+	}
+ 
+	def listUsers(start: String, count: Int): Seq[User] = {
+	  	val recSet = new SCADS.RecordSet()
+		val rangeSet = new SCADS.RangeSet()
+		recSet.setType(SCADS.RecordSetType.RST_RANGE)
+		rangeSet.setStart_key((new StringKey(start)).serialize)
+		rangeSet.setLimit(count)
+		rangeSet.setOffset(0)
+		recSet.setRange(rangeSet)
+  
+		val records = scala.collection.jcl.Conversions.convertList(SCADSCluster.client.get_set("users", recSet))
+
+		records.map(deserialize(_))
+	}
+ 
+	def deserialize(rec: SCADS.Record): User = {
+	  val username = StringKey.deserialize(rec.key, new java.text.ParsePosition(0)).stringVal
+      val attrs = Json.parse(new String(rec.value)).asInstanceOf[Map[String, AnyRef]]
 	  val nUser = new User(username, attrs("password").asInstanceOf[String])
 	  val friends = attrs("friends").asInstanceOf[Seq[String]]
 	  
-	  friends.foreach((f) => nUser.addFriend(f))                 
-   
+	  friends.foreach((f) => nUser.addFriend(f))   
 	  nUser
 	}
  
@@ -48,14 +67,34 @@ case class User(username: String, password: String) {
 	}
 
 	def addFriend(f: String) {
-	  friends += f
+	  if(!friends.contains(f))
+		  friends += f
 	}
 
 	def removeFriend(f: String) {
-	  friends -= f
+	  if(friends.contains(f))
+		  friends -= f
 	}
 
 	def friendList: List[String] = {
       friends.toList
 	}
+ 
+	def myRecentThoughts(count: Int): Seq[Thought] = {
+	  Thought.findRecentThoughts(username, count)
+	}
+ 
+	def friendsRecentThoughts(count: Int): Seq[Thought] = {
+       (friends + username).flatMap((f) => Thought.findRecentThoughts(f, count)).toList.sort((x1, x2) => x2.timestamp < x1.timestamp)
+	}
+ 
+	def think(text: String): Thought = {
+	  Thought.create(username, text)
+	}
+ 
+	def isFriend(f: User): Boolean = {
+	  friends.contains(f.username)
+	}
+
+ 	def ==(other: User): Boolean = (username == other.username)
 }

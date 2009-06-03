@@ -1,0 +1,16 @@
+<lift:surround with="default" at="content">
+	<lift:thoughtStream.think form="POST" multipart="true">
+		What are you thinking about?
+		<e:thought/>
+		<e:submit/>
+	</lift:thoughtStream.think>
+	
+	<lift:thoughtStream.currentUser>
+			<div class="thought">
+			User: <t:username/><br/>
+			Timestamp: <t:timestamp/><br/>
+			Text: <t:text/><br/>
+		</div>
+	</lift:thoughtStream.currentUser>
+
+</lift:surround>

@@ -46,6 +46,9 @@ class AppTest extends TestCase("app") {
 		assert(u1.password == retUser.password, "Passwords differ:" + u1.password + " " + retUser.password)
 		assert(retUser.friendList.contains("user2"), "Missing user2")
 		assert(retUser.friendList.contains("user3"), "Missing user3")
+  
+		val users = User.listUsers("", 100)
+		assert(users.contains(u1), "User1 is missing from list " + users.toList)
 	}
 
 	/**

@@ -8,8 +8,15 @@
 		<script id="jquery" src="/classpath/jquery.js" type="text/javascript"></script>
 	</head>
 	<body>
-		<lift:bind name="content" />
-		<lift:Menu.builder />
-		<lift:msgs/>
+		<table>
+			<tr>
+				<td><h1>SCADR</h1></td>
+				<td><lift:msgs/></td>
+			</tr>
+			<tr>
+				<td><lift:Menu.builder /></td>
+				<td><lift:bind name="content" /></td>
+			</tr>
+		</table>
 	</body>
 </html>
