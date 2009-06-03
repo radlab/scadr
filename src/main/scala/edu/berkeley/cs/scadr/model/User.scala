@@ -15,7 +15,11 @@ object User {
 	}
  
 	def find(username: String):User = {
-	  deserialize(SCADSCluster.client.get("users", new StringKey(username).serialize))
+	  val rec = SCADSCluster.useConnection((c) =>
+	  	c.get("users", new StringKey(username).serialize)
+	  )
+   
+	  deserialize(rec)
 	}
  
 	def listUsers(start: String, count: Int): Seq[User] = {
@@ -27,7 +31,7 @@ object User {
 		rangeSet.setOffset(0)
 		recSet.setRange(rangeSet)
   
-		val records = scala.collection.jcl.Conversions.convertList(SCADSCluster.client.get_set("users", recSet))
+		val records = scala.collection.jcl.Conversions.convertList(SCADSCluster.useConnection(_.get_set("users", recSet)))
 
 		records.map(deserialize(_))
 	}
@@ -54,12 +58,12 @@ case class User(username: String, password: String) {
 	  val data = Json.build(Map("password" -> password, "friends" -> friends))
 	  val rec = new SCADS.Record(key.serialize, data.toString.getBytes())
 	  
-	  SCADSCluster.client.put("users", rec)
+	  SCADSCluster.useConnection(_.put("users", rec))
 	}
 
 	def delete {
 	  val rec = new SCADS.Record(key.serialize, null)
-	  SCADSCluster.client.put("users", rec)
+	  SCADSCluster.useConnection(_.put("users", rec))
 	}
 
 	def key: Key = {

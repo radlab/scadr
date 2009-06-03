@@ -20,8 +20,11 @@ object Thought {
 		recSet.setRange(rangeSet)
 
 		println(recSet)
-
-		val records = scala.collection.jcl.Conversions.convertList(SCADSCluster.client.get_set("thoughts", recSet))
+		val recs = SCADSCluster.useConnection((c) => 
+			c.get_set("thoughts", recSet)
+		)
+  
+		val records = scala.collection.jcl.Conversions.convertList(recs)
 
 		records.map(deserialize(_))
 	}
@@ -37,12 +40,13 @@ object Thought {
 case class Thought(username: String, timestamp: Long, text: String) {
 	def save {
 		val rec =  new SCADS.Record(key, text.getBytes())
-		SCADSCluster.client.put("thoughts", rec)
+		
+		SCADSCluster.useConnection(_.put("thoughts", rec))
 	}
 
 	def delete {
 		val rec =  new SCADS.Record(key, null)
-		SCADSCluster.client.put("thoughts", rec) 
+		SCADSCluster.useConnection(_.put("thoughts", rec)) 
 	}
 
 	def key: String = {
