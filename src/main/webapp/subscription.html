@@ -1,0 +1,15 @@
+<lift:surround with="default" at="content">
+  <h1>manage.<span>subscriptions</span></h1>
+
+  <h2>Add Subscription</h2>
+  <p>Type in a username below to subscribe to their thoughts and see what they are thinking.  Don't know anyone's username?  Ask the person next to you, or add Michael (marmbrus)!</p>
+  <lift:subscriptions.add form="POST">
+    <e:username/>
+    <e:submit/>
+  </lift:subscriptions.add>
+  <div class="divider"></div>
+  <h2>Current Subscriptions</h2>
+  <lift:subscriptions.subscriptions>
+    <p><s:target/></p>
+  </lift:subscriptions.subscriptions>
+</lift:surround>

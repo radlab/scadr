@@ -5,6 +5,8 @@ import _root_.junit.framework._
 import Assert._
 import _root_.scala.xml.XML
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
+
 import edu.berkeley.cs.scadr.model._
 
 object AppTest {
@@ -23,6 +25,7 @@ def main(args : Array[String]) {
 */
 class AppTest extends TestCase("app") {
 
+  /* 
 	def assert_same(x: Seq[Thought], y: Seq[Thought]) = assert(x.equalsWith(y)((x: Thought, y: Thought) => x == y), "not equal: " + x + ", " + y)
 
 	def testThoughts(){
@@ -50,6 +53,7 @@ class AppTest extends TestCase("app") {
 		val users = User.listUsers("", 100)
 		assert(users.contains(u1), "User1 is missing from list " + users.toList)
 	}
+  */
 
 	/**
 	* Tests to make sure the project's XML files are well-formed.

@@ -1,0 +1,32 @@
+<lift:surround with="default" at="content">
+  <h1>Login to <span>SCADr<sup>2.0</sup></span></h1>
+
+  <lift:test_cond.loggedout>
+    <span id="slogan2">Hello there! and who might you be?</span>
+
+    <p>
+      If you don't have a login you can
+      <lift:scadrUtil.registerLink><e:registerLink/></lift:scadrUtil.registerLink>!
+    </p>	
+
+    <table>
+      <lift:loginUser.login form="POST" multipart="true">
+        <tr>
+          <td>Username:</td>
+          <td><e:username/></td>
+        </tr>
+        <tr>
+          <td>Password:</td>
+          <td><e:password/></td>
+        </tr>
+        <tr>
+          <td><e:submit/></td>
+        </tr>
+      </lift:loginUser.login>
+    </table>
+  </lift:test_cond.loggedout>
+
+  <lift:test_cond.loggedin>
+    <p>You are already logged in. You can <lift:scadrUtil.logoutLink><e:logoutLink/></lift:scadrUtil.logoutLink>.</p>
+  </lift:test_cond.loggedin>
+</lift:surround>

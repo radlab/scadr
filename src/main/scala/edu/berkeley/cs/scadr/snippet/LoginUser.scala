@@ -10,24 +10,22 @@ import scala.xml._
 
 import edu.berkeley.cs.scadr.model._
 
-class RegisterUser {
-	def register(xhtml: NodeSeq): NodeSeq = {
+class LoginUser {
+  def login(xhtml: NodeSeq): NodeSeq = {
 	  var username = ""
 	  var password = ""
-	  def process() = {
-      try {
-        PiqlUser.create(username, password)
-        S.notice("User " + username + " created!")
-        redirectTo("index")
-      } catch {
-        case ExistingUsernameException(u) => 
-          S.error("general_error", Text("Please pick a different username"))
+    def handle() = {
+      PiqlUser.userByCredentials(username, password) match {
+        case None => 
+          S.error("general_error", Text("Invalid username and/or password"))
+        case Some(user) =>
+          PiqlUser.currentUser.set(Full(user))
+          redirectTo("index")
       }
-	  }
-
+    }
 	  bind("e", xhtml,
 	  		"username" -> SHtml.text(username, (u: String) => username = u),
 	  		"password" -> SHtml.text(password, (p: String) => password = p),
-	  		"submit" -> SHtml.submit("submit", process))
-	}
+	  		"submit" -> SHtml.submit("Let me in!", handle))
+  }
 }

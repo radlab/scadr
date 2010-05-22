@@ -1,49 +1,67 @@
 package edu.berkeley.cs.scadr.model
 
-import edu.berkeley.cs.scads._
 import java.security.MessageDigest
-import net.liftweb.http.RequestVar
+import net.liftweb.http._
+import net.liftweb.common._
 
-object User {
-	object currentUser extends RequestVar[User](null)
+import piql._
+
+case class ExistingUsernameException(val username: String) extends RuntimeException(username)
+case class NoSuchUsernameException(val username: String) extends RuntimeException(username)
+
+case class UnimplementedException(val feature: String) extends RuntimeException("feature not implemented: " + feature)
+
+object PiqlUser {
+	object currentUser extends SessionVar[Box[User]](Empty)
+
+  def loggedIn = currentUser.isDefined
+  def loggedIn_? = loggedIn _
+
+  def loggedOut = currentUser.isEmpty
+  def loggedOut_? = loggedOut _
+  
+
 	val passHash = MessageDigest.getInstance("MD5")
+  private implicit val env = ScadsEnv.env
 
-	def create(username: String, password:String): User = {
-	  val user = new User(username, hashPassword(password))
-	  user.save
-	  user
+	def create(username: String, password: String): User = userByName(username) match {
+    case Some(_) => 
+      throw new ExistingUsernameException(username)
+    case None => 
+      val u = new User
+      u.name = username
+      u.password = password
+      u.save
+      u
 	}
 
-	def find(username: String):User = {
-	  val rec = SCADSCluster.useConnection((c) =>
-	  	c.get("users", new StringKey(username).serialize)
-	  )
+  def userByCredentials(username: String, password: String): Option[User] = userByName(username) match {
+    case None => None
+    case Some(user) => 
+      if (user.password == password)
+        Some(user)
+      else 
+        None
+  }
 
-	  deserialize(rec)
-	}
+  def userByName(username: String): Option[User] = {
+    val qL = Queries.userByName(username)
+    if (qL isEmpty)
+      None
+    else
+      Some(qL.head)
+  }
+
+
+	def find(username: String): User = userByName(username).getOrElse(null)
+  def find_!(username: String): User = userByName(username) match {
+    case None => throw new NoSuchUsernameException(username)
+    case Some(user) => user
+  }
+
 
 	def listUsers(start: String, count: Int): Seq[User] = {
-	  	val recSet = new SCADS.RecordSet()
-		val rangeSet = new SCADS.RangeSet()
-		recSet.setType(SCADS.RecordSetType.RST_RANGE)
-		rangeSet.setStart_key((new StringKey(start)).serialize)
-		rangeSet.setLimit(count)
-		rangeSet.setOffset(0)
-		recSet.setRange(rangeSet)
-
-		val records = scala.collection.jcl.Conversions.convertList(SCADSCluster.useConnection(_.get_set("users", recSet)))
-
-		records.map(deserialize(_))
-	}
-
-	def deserialize(rec: SCADS.Record): User = {
-	  val username = StringKey.deserialize(rec.key, new java.text.ParsePosition(0)).stringVal
-      val attrs = Json.parse(new String(rec.value)).asInstanceOf[Map[String, AnyRef]]
-	  val nUser = new User(username, attrs("password").asInstanceOf[String])
-	  val friends = attrs("friends").asInstanceOf[Seq[String]]
-
-	  friends.foreach((f) => nUser.addFriend(f))
-	  nUser
+    throw new UnimplementedException("listUsers")
 	}
 
 	def hashPassword(password: String): String = {
@@ -51,6 +69,7 @@ object User {
 	}
 }
 
+/* 
 case class User(username: String, password: String) {
 	val friends = new scala.collection.mutable.ArrayBuffer[String]
 
@@ -102,3 +121,4 @@ case class User(username: String, password: String) {
 
  	def ==(other: User): Boolean = (username == other.username)
 }
+*/

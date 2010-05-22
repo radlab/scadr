@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:lift="http://liftweb.net/">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>Welcome to SCADr Running on SCADS</title>
+<title>Welcome to SCADr Running on PIQL</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link rel="stylesheet" type="text/css" href="default.css" />
@@ -19,7 +19,7 @@
 <div id="header">
 	<div id="header_inner">
 		<h1><span>SCADr.</span>radlab.net</h1>
-		<div id="slogan">Running on SCADS!</div>
+		<div id="slogan">Running on PIQL!</div>
 	</div>
 </div>
 
@@ -51,6 +51,9 @@
 	</div>
 
 	<div id="rcol">
+    <div id="rerror">
+      <lift:msg id="general_error" />
+    </div>
 		<div id="rcontent">
 			<lift:bind name="content" />
 		</div>
