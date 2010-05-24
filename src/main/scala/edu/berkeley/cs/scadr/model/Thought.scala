@@ -1,5 +1,8 @@
 package edu.berkeley.cs.scadr.model
 
+import java.util.Date
+import scala.xml._
+
 import piql._
 
 object PiqlThought {
@@ -13,4 +16,11 @@ object PiqlThought {
     t.save
     t
 	}
+
+  def formatThoughtTimestamp(thought: Thought) = (new Date(thought.timestamp * 1000L)).toString
+
+  def thoughtToHTML(thought: Thought): NodeSeq = {
+    <h3>{thought.text}</h3>
+    <div class="summary">- thought by {thought.owner.name} at {formatThoughtTimestamp(thought)}</div>
+  }
 }

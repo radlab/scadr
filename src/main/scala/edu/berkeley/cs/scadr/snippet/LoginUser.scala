@@ -25,7 +25,7 @@ class LoginUser {
     }
 	  bind("e", xhtml,
 	  		"username" -> SHtml.text(username, (u: String) => username = u),
-	  		"password" -> SHtml.text(password, (p: String) => password = p),
+	  		"password" -> SHtml.password(password, (p: String) => password = p),
 	  		"submit" -> SHtml.submit("Let me in!", handle))
   }
 }

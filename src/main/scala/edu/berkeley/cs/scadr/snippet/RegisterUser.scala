@@ -16,8 +16,8 @@ class RegisterUser {
 	  var password = ""
 	  def process() = {
       try {
-        PiqlUser.create(username, password)
-        S.notice("User " + username + " created!")
+        val user = PiqlUser.create(username, password)
+        PiqlUser.currentUser.set(Full(user))
         redirectTo("index")
       } catch {
         case ExistingUsernameException(u) => 
@@ -27,7 +27,7 @@ class RegisterUser {
 
 	  bind("e", xhtml,
 	  		"username" -> SHtml.text(username, (u: String) => username = u),
-	  		"password" -> SHtml.text(password, (p: String) => password = p),
+	  		"password" -> SHtml.password(password, (p: String) => password = p),
 	  		"submit" -> SHtml.submit("submit", process))
 	}
 }

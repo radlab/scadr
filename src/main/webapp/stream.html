@@ -8,10 +8,10 @@
 				</div>
 				<h2>What are you thinking?</h2>
 				<p>
-					<lift:thoughtStream.think form="POST" multipart="true">
+					<lift:thoughtStream.ajaxThink>
 					<e:thought/>
 					<e:submit/>
-					</lift:thoughtStream.think>
+					</lift:thoughtStream.ajaxThink>
 					<br/>
 					<br/>
 				</p>
@@ -21,6 +21,7 @@
 	<div class="divider"></div>
 	
 	<h1>what.your.friends.are.<span>thinking</span></h1>
+  <div id="appender"></div>
 	<lift:thoughtStream.currentUser>
 			<h3><t:text/></h3>
 			<div class="summary">- thought by <t:username/> at <t:timestamp/></div>

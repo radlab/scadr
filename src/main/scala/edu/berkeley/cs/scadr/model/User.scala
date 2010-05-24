@@ -19,9 +19,13 @@ object PiqlUser {
 
   def loggedOut = currentUser.isEmpty
   def loggedOut_? = loggedOut _
-  
 
-	val passHash = MessageDigest.getInstance("MD5")
+	private val passHash = MessageDigest.getInstance("SHA1")
+
+	def hashPassword(password: String): String = {
+	  passHash.digest(password.getBytes()).map((b:Byte) => Integer.toHexString(0xFF & b)).foldRight("")((x1:String, x2:String) => x1 + x2)
+	}
+
   private implicit val env = ScadsEnv.env
 
 	def create(username: String, password: String): User = userByName(username) match {
@@ -30,7 +34,7 @@ object PiqlUser {
     case None => 
       val u = new User
       u.name = username
-      u.password = password
+      u.password = hashPassword(password)
       u.save
       u
 	}
@@ -38,7 +42,7 @@ object PiqlUser {
   def userByCredentials(username: String, password: String): Option[User] = userByName(username) match {
     case None => None
     case Some(user) => 
-      if (user.password == password)
+      if (user.password == hashPassword(password))
         Some(user)
       else 
         None
@@ -64,61 +68,5 @@ object PiqlUser {
     throw new UnimplementedException("listUsers")
 	}
 
-	def hashPassword(password: String): String = {
-	  passHash.digest(password.getBytes()).map((b:Byte) => Integer.toHexString(0xFF & b)).foldRight("")((x1:String, x2:String) => x1 + x2)
-	}
+
 }
-
-/* 
-case class User(username: String, password: String) {
-	val friends = new scala.collection.mutable.ArrayBuffer[String]
-
-	def save {
-	  val data = Json.build(Map("password" -> password, "friends" -> friends))
-	  val rec = new SCADS.Record(key.serialize, data.toString.getBytes())
-
-	  SCADSCluster.useConnection(_.put("users", rec))
-	}
-
-	def delete {
-	  val rec = new SCADS.Record(key.serialize, null)
-	  SCADSCluster.useConnection(_.put("users", rec))
-	}
-
-	def key: Key = {
-	  new StringKey(username)
-	}
-
-	def addFriend(f: String) {
-	  if(!friends.contains(f))
-		  friends += f
-	}
-
-	def removeFriend(f: String) {
-	  if(friends.contains(f))
-		  friends -= f
-	}
-
-	def friendList: List[String] = {
-      friends.toList
-	}
-
-	def myRecentThoughts(count: Int): Seq[Thought] = {
-	  Thought.findRecentThoughts(username, count)
-	}
-
-	def friendsRecentThoughts(count: Int): Seq[Thought] = {
-       (friends + username).flatMap((f) => Thought.findRecentThoughts(f, count)).toList.sort((x1, x2) => x2.timestamp < x1.timestamp)
-	}
-
-	def think(text: String): Thought = {
-	  Thought.create(username, text)
-	}
-
-	def isFriend(f: User): Boolean = {
-	  friends.contains(f.username)
-	}
-
- 	def ==(other: User): Boolean = (username == other.username)
-}
-*/
