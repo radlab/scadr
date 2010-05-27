@@ -25,7 +25,7 @@ def main(args : Array[String]) {
 */
 class AppTest extends TestCase("app") {
 
-  /* 
+  /*
 	def assert_same(x: Seq[Thought], y: Seq[Thought]) = assert(x.equalsWith(y)((x: Thought, y: Thought) => x == y), "not equal: " + x + ", " + y)
 
 	def testThoughts(){

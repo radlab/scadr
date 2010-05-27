@@ -24,7 +24,22 @@ class Subscriptions {
         S.error("general_error", Text("Could not find followers: " + e.getMessage))
     }
 
-    following.flatMap(s => bind("s", xhtml, "target" -> s.name))
+    def deleteSubscriptionTo(target: User) {
+      try {
+        val subscriptions = PiqlUser.currentUser.open_!.mySubscriptionTo(target.key)
+        if (subscriptions.isEmpty)
+          throw new IllegalStateException("subscription does not exist to target: " + target.name)
+        val subscription = subscriptions.head
+        subscription.delete
+      } catch {
+        case e =>
+          S.error("general_error", Text("Could not delete subscription: " + e.getMessage))
+      }
+    }
+
+    following.flatMap(s => bind("s", xhtml,
+          "target" -> s.name,
+          "delete" -> SHtml.link("subscription", () => deleteSubscriptionTo(s), Text("Unsubscribe"))))
   }
 
 	def add(xhtml: NodeSeq): NodeSeq = {
@@ -34,7 +49,7 @@ class Subscriptions {
       try {
         val curUser = PiqlUser.currentUser.open_!
         val targetUser = PiqlUser.find_!(username)
-        if (curUser.name == targetUser.name) 
+        if (curUser.name == targetUser.name)
           throw new SelfSubscribeException(username)
         PiqlSubscription.subscribe(curUser, targetUser)
       } catch {
@@ -49,7 +64,7 @@ class Subscriptions {
 
     bind("e", xhtml,
         "username" -> SHtml.text(username, (u: String) => username = u),
-        "submit"   -> SHtml.submit("Subscribe", handle)) 
+        "submit"   -> SHtml.submit("Subscribe", handle))
   }
 
 }

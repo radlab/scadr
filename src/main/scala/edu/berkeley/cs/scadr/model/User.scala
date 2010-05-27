@@ -29,9 +29,9 @@ object PiqlUser {
   private implicit val env = ScadsEnv.env
 
 	def create(username: String, password: String): User = userByName(username) match {
-    case Some(_) => 
+    case Some(_) =>
       throw new ExistingUsernameException(username)
-    case None => 
+    case None =>
       val u = new User
       u.name = username
       u.password = hashPassword(password)
@@ -41,10 +41,10 @@ object PiqlUser {
 
   def userByCredentials(username: String, password: String): Option[User] = userByName(username) match {
     case None => None
-    case Some(user) => 
+    case Some(user) =>
       if (user.password == hashPassword(password))
         Some(user)
-      else 
+      else
         None
   }
 

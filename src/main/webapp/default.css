@@ -174,8 +174,9 @@ background: inherit;
 color: #50514D;
 font-size: 15px;
 text-transform: lowercase;
-height: 34px;
-background: url('images/a3.gif') repeat-x 0px 17px;
+/* height: 34px; */
+/* background: url('images/a3.gif') repeat-x 0px 17px; */
+overflow: hidden;
 }
 
 h3 span

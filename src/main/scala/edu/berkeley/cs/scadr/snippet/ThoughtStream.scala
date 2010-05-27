@@ -27,17 +27,25 @@ class ThoughtStream {
 	  thoughts.flatMap((t) =>
 	    bind("t", xhtml,
 	    	"username" -> t.owner.name,
-	    	"timestamp" -> PiqlThought.formatThoughtTimestamp(t), 
+	    	"timestamp" -> PiqlThought.formatThoughtTimestamp(t),
 	    	"text" -> t.text))
   }
 
+  private val THOUGHT_MAX_LEN = 500
+
   private def processThought(thought: String): Option[Thought] = {
     try {
-      val t = PiqlThought.create(PiqlUser.currentUser.open_!, thought)
-      BroadcastActorRegistry ! (t, /* PiqlUser.currentUser.open_!.myFollowers(100) */ Nil)
-      Some(t) 
+      val truncated =
+        if (thought.length > THOUGHT_MAX_LEN)
+          thought.substring(0, THOUGHT_MAX_LEN)
+        else thought
+      val t = PiqlThought.create(PiqlUser.currentUser.open_!, truncated)
+      val msg = (t, PiqlUser.currentUser.open_!.myFollowers(100).toList)
+      //println("sending msg to BActor: " + msg)
+      BroadcastActorRegistery ! msg
+      Some(t)
     } catch {
-      case e => 
+      case e =>
         S.error("Error when recording thought: " + e.getMessage)
         None
     }
@@ -46,7 +54,7 @@ class ThoughtStream {
   def ajaxThink(xhtml: Group): NodeSeq = {
     def process(s: String): JsCmd = {
       processThought(s) match {
-        case Some(t) => 
+        case Some(t) =>
           Seq(SetValById("thought", Str("")), PrependHtml("appender", PiqlThought.thoughtToHTML(t)))
         case None =>
           Alert("Unable to save message - server error")

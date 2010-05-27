@@ -16,7 +16,7 @@ class LoginUser {
 	  var password = ""
     def handle() = {
       PiqlUser.userByCredentials(username, password) match {
-        case None => 
+        case None =>
           S.error("general_error", Text("Invalid username and/or password"))
         case Some(user) =>
           PiqlUser.currentUser.set(Full(user))

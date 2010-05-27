@@ -20,7 +20,7 @@ class RegisterUser {
         PiqlUser.currentUser.set(Full(user))
         redirectTo("index")
       } catch {
-        case ExistingUsernameException(u) => 
+        case ExistingUsernameException(u) =>
           S.error("general_error", Text("Please pick a different username"))
       }
 	  }
