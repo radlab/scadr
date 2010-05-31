@@ -52,6 +52,7 @@ class ThoughtStream {
   }
 
   def ajaxThink(xhtml: Group): NodeSeq = {
+    var thought = ""
     def process(s: String): JsCmd = {
       processThought(s) match {
         case Some(t) =>
@@ -60,9 +61,11 @@ class ThoughtStream {
           Alert("Unable to save message - server error")
       }
     }
-	  bind("e", xhtml,
-	  		"thought" -> SHtml.text("", (t: String) => (), "id" -> "thought"),
-	  		"submit" -> <button onclick={SHtml.ajaxCall(ValById("thought"), process _)._2}>Think</button>)
+    SHtml.ajaxForm(
+      bind("e", xhtml,
+          "thought" -> SHtml.text("", (t: String) => thought = t, "id" -> "thought"),
+          "submit" -> SHtml.submit("submit", () => { })) ++
+      SHtml.hidden(() => { process(thought) }))
   }
 
 	def think(xhtml: NodeSeq): NodeSeq = {
