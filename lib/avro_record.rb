@@ -3,8 +3,12 @@ require File.join(RAILS_ROOT,'lib/piql/piql.jar')
 import Java::EduBerkeleyCsScadsPiqlScadr::ScadrClient
 import Java::EduBerkeleyCsScadsPiql::SimpleExecutor
 import Java::EduBerkeleyCsScadsStorage::TestScalaEngine
+import Java::EduBerkeleyCsScadsStorage::ScadsCluster
+import Java::EduBerkeleyCsScadsComm::ZooKeeperNode
 
-$CLIENT = ScadrClient.new(TestScalaEngine.new_scads_cluster(1), SimpleExecutor.new, 10)
+$CLUSTER_ROOT=ZooKeeperNode.apply("zk://ec2-50-16-2-36.compute-1.amazonaws.com,ec2-174-129-105-138.compute-1.amazonaws.com,ec2-50-16-59-213.compute-1.amazonaws.com/apps/scadr/")
+$CLIENT = ScadrClient.new(ScadsCluster.new($CLUSTER_ROOT), SimpleExecutor.new, 10)
+
 
 class Object
   # Mainly to convert String to Utf8 without having to check if an Object is a String
