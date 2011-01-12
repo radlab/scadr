@@ -6,8 +6,8 @@ import Java::EduBerkeleyCsScadsStorage::TestScalaEngine
 import Java::EduBerkeleyCsScadsStorage::ScadsCluster
 import Java::EduBerkeleyCsScadsComm::ZooKeeperNode
 
-$CLUSTER_ROOT=ZooKeeperNode.apply("zk://ec2-50-16-2-36.compute-1.amazonaws.com,ec2-174-129-105-138.compute-1.amazonaws.com,ec2-50-16-59-213.compute-1.amazonaws.com/apps/scadr/")
-$CLIENT = ScadrClient.new(ScadsCluster.new($CLUSTER_ROOT), SimpleExecutor.new, 10)
+$CLUSTER_ROOT=ZooKeeperNode.apply("zk://ec2-50-16-2-36.compute-1.amazonaws.com,ec2-174-129-105-138.compute-1.amazonaws.com/apps/scadr/")
+$CLIENT = ScadrClient.new(ScadsCluster.new($CLUSTER_ROOT), ParallelExecutor.new, 10)
 
 
 class Object
