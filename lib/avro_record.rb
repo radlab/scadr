@@ -2,6 +2,7 @@ require File.join(RAILS_ROOT,'lib/piql/piql.jar')
 
 import Java::EduBerkeleyCsScadsPiqlScadr::ScadrClient
 import Java::EduBerkeleyCsScadsPiql::SimpleExecutor
+import Java::EduBerkeleyCsScadsPiql::ParallelExecutor
 import Java::EduBerkeleyCsScadsStorage::TestScalaEngine
 import Java::EduBerkeleyCsScadsStorage::ScadsCluster
 import Java::EduBerkeleyCsScadsComm::ZooKeeperNode
